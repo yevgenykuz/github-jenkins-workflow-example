@@ -16,21 +16,21 @@ Git flow
 Branching strategy
 ------------------
 
-* `master` is the base branch, there is no `develop` branch
-* `master` is considered as stable, tested code
-* For every task, a separate branch is checked out from the `master` branch (named `"_JIRA_ISSUE_KEY_ - _JIRA_ISSUE_TITLE_"`), and then merged back to the `master` branch using a pull request
-* To prevent complicated merges when a task is complete, programmers are encouraged to pull `master` and merge locally to their task branch on a daily basis 
+* ``master`` is the base branch, there is no ``develop`` branch
+* ``master`` is considered as stable, tested code
+* For every task, a separate branch is checked out from the ``master`` branch (named ``"_JIRA_ISSUE_KEY_ - _JIRA_ISSUE_TITLE_"``), and then merged back to the ``master`` branch using a pull request
+* To prevent complicated merges when a task is complete, programmers are encouraged to pull ``master`` and merge locally to their task branch on a daily basis 
 * Programmers can collaborate on a single task by pushing a task branch to remote and sharing it
-* Planned releases are created on the `master` branch adding a tag on it (see *Tags*). This is done automatically using a Jenkins job (see *Jenkins release job*)
-* Hot fixes are created on a separate branch (named `hotfix-vX.Y.Z - list of relevant _JIRA_ISSUE_KEYS_`), tagged on it (see *Tags*), and then merged back to `master` using a pull request - all done manually (to fix the release issues)
+* Planned releases are created on the ``master`` branch adding a tag on it (see *Tags*). This is done automatically using a Jenkins job (see *Jenkins release job*)
+* Hot fixes are created on a separate branch (named ``hotfix-vX.Y.Z - list of relevant _JIRA_ISSUE_KEYS_``), tagged on it (see *Tags*), and then merged back to ``master`` using a pull request - all done manually (to fix the release issues)
 * All branches are deleted from remote (GitHub) after the relevant pull request is merged
 
 Tags
 ----
 
 * All releases are marked with tags. These tags are then used by CI and other Jenkins jobs (see *Jenkins*)
-* Major releases are tagged on the `master` branch, by running release Jenkins job (see *Jenkins release job*)
-* Hot fixes are tagged on the relevant `hotfix-vX.Y.Z` branch, and **not** on the `master` branch, manually
+* Major releases are tagged on the ``master`` branch, by running release Jenkins job (see *Jenkins release job*)
+* Hot fixes are tagged on the relevant ``hotfix-vX.Y.Z`` branch, and **not** on the ``master`` branch, manually
 * All tags must be annotated and contain in its description the release version this tag represents, at minimum 
 
 
@@ -61,7 +61,7 @@ To install ngrok on your Jenkins master see the following configuration example 
   unzip ngrok-stable-linux-amd64.zip
   rm ngrok-stable-linux-amd64.zip
 
-* Create a configuration file for ngrok at `/opt/ngrok/ngrok.yml` with the following:
+* Create a configuration file for ngrok at ``/opt/ngrok/ngrok.yml`` with the following:
 
 .. code-block:: bash
 
@@ -72,7 +72,7 @@ To install ngrok on your Jenkins master see the following configuration example 
       addr: 8080
       proto: http
 
-* Create a systemd service file at `/etc/systemd/system/ngrok.service` with the following:
+* Create a systemd service file at ``/etc/systemd/system/ngrok.service`` with the following:
 
 .. code-block:: bash
 
@@ -110,22 +110,22 @@ GitHub pull request builder plugin
 
 Create Jenkins CI job for every pull request
 --------------------------------------------
-This job will be triggered every time a pull request is opened against the `master` branch.
+This job will be triggered every time a pull request is opened against the ``master`` branch.
 
 * Go to Jenkins -> "New Item" -> and create a new "Freestyle project"
 * Under "General" -> tick "GitHub project" and insert your project url
 * Under "Source Code Management" -> tick "Git"
 * Under "Git" -> insert your project url and select your credentials
-* Under "Git" -> click "Advanced" and under "Refspec" insert `+refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*`
-* Under "Git" -> under "Branches to build" -> "Branch Specifier" insert `${ghprbActualCommit}`
+* Under "Git" -> click "Advanced" and under "Refspec" insert ``+refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*``
+* Under "Git" -> under "Branches to build" -> "Branch Specifier" insert ``${ghprbActualCommit}``
 * Under "Build Triggers" -> tick "GitHub Pull Request Builder"
 * Under "GitHub Pull Request Builder" -> tick "Use github hooks for build triggering"
 * Under "GitHub Pull Request Builder" -> click "Advanced"
-* Under "Advanced" -> "Trigger phrase" -> insert `.*(re)?run tests.*` **to allow restarting the CI by commenting "run tests" in the PR**
+* Under "Advanced" -> "Trigger phrase" -> insert ``.*(re)?run tests.*`` **to allow restarting the CI by commenting "run tests" in the PR**
 * Under "Advanced" -> "White list" -> add the github usernames that will be allowed to trigger this build
-* Under "Advanced" -> "Whitelist Target Branches:" -> add `master`
+* Under "Advanced" -> "Whitelist Target Branches:" -> add ``master``
 * Under "Advanced" -> click "Trigger Setup" to customize update messages back at GitHub
-* Under "Trigger Setup" -> "Commit Status Context" -> insert `Jenkins`
+* Under "Trigger Setup" -> "Commit Status Context" -> insert ``Jenkins``
 * Under "Trigger Setup" -> under "Commit Status Build Result" -> click "Add" and add 3 custom messages for every status (success, error, and failure)
 * Under "Build" -> create your CI checks using various Jenkins scripts/plugins
 * Other customization (like build name) can be also altered if needed
@@ -134,8 +134,8 @@ Create Jenkins release job for planned releases
 -----------------------------------------------
 This job will be triggered manually by a team member when a planned release is due. The following will be done:
 
-* Latest commit from `master` will be pulled
-* Relevant files will be updated (in this example - some .pom file versions)
+* Latest commit from ``master`` will be pulled
+* Relevant files will be updated (for example - some .pom file versions) - using a job parameter (``${ReleaseVersion}`` for example)
 * Updated files will be committed
 * This commit will be tagged (the tag name is inserted manually as a parameter)
 * CI checks will be performed
@@ -147,10 +147,10 @@ To accomplish this, do the following:
 * Under "General" -> tick "GitHub project" and insert your project url
 * Under "Source Code Management" -> tick "Git"
 * Under "Git" -> insert your project url and select your credentials
-* Under "Git" -> click "Advanced" and under "Refspec" insert `+refs/heads/master:refs/remotes/origin/master`
-* Under "Git" -> under "Branches to build" -> "Branch Specifier" insert `refs/heads/master`
+* Under "Git" -> click "Advanced" and under "Refspec" insert ``+refs/heads/master:refs/remotes/origin/master``
+* Under "Git" -> under "Branches to build" -> "Branch Specifier" insert ``refs/heads/master``
 * Under "Build" -> create your file updates and CI checks using various Jenkins scripts/plugins, upload artifacts if successful
-* Under "Build" -> create a new shell/powershell script and add "git add ." -new line- "git commit -m "`commit message`" to commit your changes
+* Under "Build" -> create a new shell/powershell script and add "git add ." -new line- "git commit -m "Prepare v${ReleaseVersion}" to commit your changes
 * Under "Post-build Actions" -> click "Add post-build action" and create a new "Git Publisher" block
 * Under "Git Publisher" -> tick "Push Only If Build Succeeds"
 * Under "Git Publisher" -> under "Tags" -> click "Add Tag" 
@@ -168,20 +168,20 @@ GitHub team structure
 
 Add webhook for automatic CI using Jenkins
 -------------------------------------------
-| This webhook will start a Jenkins build on every pull request to merge into `master` branch.
+| This webhook will start a Jenkins build on every pull request to merge into ``master`` branch.
 | To do so, go to github repository -> "Settings" -> "Webhooks" -> "Add webhook", and set the following:
 
-#. "Payload URL" -> http://_Your_Jenkins_Public_IP/ghprbhook/ (use generated ngrok URL if you used their service)
+#. "Payload URL" -> ``http://_Your_Jenkins_Public_IP/ghprbhook/`` (use generated ngrok URL if you used their service)
 #. "Let me select individual events." -> tick it
 #. "Pull requests", "Issue comments" -> tick both (leave out all others)
 #. Click "Add webhook"
 
-Protect `master` branch
+Protect ``master`` branch
 -----------------------
-Create branch protection rule for `master`. This rule will force the following:
+Create branch protection rule for ``master``. This rule will force the following:
 
 * Prevent direct commits to master branch by forcing all merges to go through pull requests
-* Force a minimum of X reviewers to approve each pull request (reviewers will be added automatically from the configuration found at `.github/CODEOWNERS` file) 
+* Force a minimum of X reviewers to approve each pull request (reviewers will be added automatically from the configuration found at ``.github/CODEOWNERS`` file) 
 * Force all pull request to go through a status check before merging
 
 To do so, go to github repository -> "Settings" -> "Branches" -> "Add rule", and set the following:
