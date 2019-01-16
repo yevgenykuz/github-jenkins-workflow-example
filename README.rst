@@ -142,6 +142,7 @@ This job will be triggered manually by a team member when a planned release is d
 * If Ci checks passed, the latest commit and tag will be pushed, without pull request (Jenkins credentials must have admin repository rights)
 
 To accomplish this, do the following:
+
 * Go to Jenkins -> "New Item" -> and create a new "Freestyle project"
 * Under "General" -> tick "GitHub project" and insert your project url
 * Under "Source Code Management" -> tick "Git"
