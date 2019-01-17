@@ -18,19 +18,19 @@ Branching strategy
 
 * ``master`` is the base branch, there is no ``develop`` branch
 * ``master`` is considered as stable, tested code
+* The are no parallel support for parallel releases - all releases are made from the ``master`` branch
 * For every task, a separate branch is checked out from the ``master`` branch (named ``"_JIRA_ISSUE_KEY_ - _JIRA_ISSUE_TITLE_"``), and then merged back to the ``master`` branch using a pull request
 * To prevent complicated merges when a task is complete, programmers are encouraged to pull ``master`` and merge locally to their task branch on a daily basis 
 * Programmers can collaborate on a single task by pushing a task branch to remote and sharing it
-* Planned releases are created on the ``master`` branch adding a tag on it (see *Tags*). This is done automatically using a Jenkins job (see *Jenkins release job*)
-* Hot fixes are created on a separate branch (named ``hotfix-vX.Y.Z - list of relevant _JIRA_ISSUE_KEYS_``), tagged on it (see *Tags*), and then merged back to ``master`` using a pull request - all done manually (to fix the release issues)
+* Hot fixes created on a separate branch (named ``hotfix-vX.Y.Z - list of relevant _JIRA_ISSUE_KEYS_``), and then merged back to ``master`` using a pull request
+* Planned releases **and** hot fixes are created on the ``master`` branch by adding a tag on it (see *Tags*). This is done automatically using a Jenkins job (see *Jenkins release job*)
 * All branches are deleted from remote (GitHub) after the relevant pull request is merged
 
 Tags
 ----
 
 * All releases are marked with tags. These tags are then used by CI and other Jenkins jobs (see *Jenkins*)
-* Major releases are tagged on the ``master`` branch, by running release Jenkins job (see *Jenkins release job*)
-* Hot fixes are tagged on the relevant ``hotfix-vX.Y.Z`` branch, and **not** on the ``master`` branch, manually
+* Major releases **and** hot fixes are tagged on the ``master`` branch, by running release Jenkins job (see *Jenkins release job*)
 * All tags must be annotated and contain in its description the release version this tag represents, at minimum 
 
 
@@ -132,14 +132,14 @@ This job will be triggered every time a pull request is opened against the ``mas
 
 Create Jenkins release job for planned releases
 -----------------------------------------------
-This job will be triggered manually by a team member when a planned release is due. The following will be done:
+This job will be triggered manually by a team member when a planned release or a hot fix is due. The following will be done:
 
 * Latest commit from ``master`` will be pulled
 * Relevant files will be updated (for example - some .pom file versions) - using a job parameter (``${ReleaseVersion}`` for example)
 * Updated files will be committed
 * This commit will be tagged (the tag name is inserted manually as a parameter)
 * CI checks will be performed
-* If Ci checks passed, the latest commit and tag will be pushed, without pull request (Jenkins credentials must have admin repository rights)
+* If CI checks passed, the latest commit and tag will be pushed, without pull request (Jenkins credentials must have admin repository rights)
 
 To accomplish this, do the following:
 
@@ -158,6 +158,9 @@ To accomplish this, do the following:
 * Under new tag -> "Tag message" insert "v${ReleaseVersion}, created by Jenkins"
 * Under new tag -> tick "Create new tag"
 * Under new tag -> "Target remote name" -> "origin"
+* Under "Git Publisher" -> under "Branches" -> click "Add Branch" 
+* Under new branch -> "Branch to push" -> "master"
+* Under new branch -> "Target remote name" -> "origin"
 
 GitHub
 ======
