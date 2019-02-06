@@ -1,7 +1,7 @@
-GitHub + Jenkins + JIRA Workflow Example
-########################################
+GitHub + Jenkins Workflow Example
+#################################
 
-A complete example for GitHub (code management) + JIRA (issue management) + Jenkins (CI, automatic release) workflow, with configuration.
+A complete example for GitHub (code management) + Jenkins (CI, automatic release) workflow, with configuration.
 
 -----
 
@@ -15,20 +15,18 @@ Git flow
 ========
 Branching strategy
 ------------------
-
 * ``master`` is the base branch, there is no ``develop`` branch
 * ``master`` is considered as stable, tested code
 * The are no parallel support for parallel releases - all releases are made from the ``master`` branch
-* For every task, a separate branch is checked out from the ``master`` branch (named ``"_JIRA_ISSUE_KEY_ - _JIRA_ISSUE_TITLE_"``), and then merged back to the ``master`` branch using a pull request
+* For every task, a separate branch is checked out from the ``master`` branch (named ``"_ISSUE_KEY_ - _ISSUE_TITLE_"``), and then merged back to the ``master`` branch using a pull request
+* Hot fixes created on a separate branch (named ``hotfix-vX.Y.Z - list of relevant _ISSUE_KEYS_``), and then merged back to ``master`` using a pull request
 * To prevent complicated merges when a task is complete, programmers are encouraged to pull ``master`` and merge locally to their task branch on a daily basis 
 * Programmers can collaborate on a single task by pushing a task branch to remote and sharing it
-* Hot fixes created on a separate branch (named ``hotfix-vX.Y.Z - list of relevant _JIRA_ISSUE_KEYS_``), and then merged back to ``master`` using a pull request
-* Planned releases **and** hot fixes are created on the ``master`` branch by adding a tag on it (see *Tags*). This is done automatically using a Jenkins job (see *Jenkins release job*)
+* Planned releases **and** hot fixes are marked on the ``master`` branch by adding a tag on it (see *Tags*). This is done automatically using a Jenkins job (see *Jenkins release job*)
 * All branches are deleted from remote (GitHub) after the relevant pull request is merged
 
 Tags
 ----
-
 * All releases are marked with tags. These tags are then used by CI and other Jenkins jobs (see *Jenkins*)
 * Major releases **and** hot fixes are tagged on the ``master`` branch, by running release Jenkins job (see *Jenkins release job*)
 * All tags must be annotated and contain in its description the release version this tag represents, at minimum 
@@ -206,8 +204,6 @@ Authors
 License
 =======
 
-Creative Commons Attribution 4.0 International - `LICENSE <https://github.com/yevgenykuz//qpack-to-jira-with-xray-migrator/blob/master/LICENSE>`_
+Creative Commons Attribution 4.0 International - `LICENSE <https://github.com/yevgenykuz//github-jenkins-workflow-example/blob/master/LICENSE>`_
 
 -----
-
-.
