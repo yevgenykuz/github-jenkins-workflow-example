@@ -17,7 +17,7 @@ Branching strategy
 ------------------
 * ``master`` is the base branch, there is no ``develop`` branch
 * ``master`` is considered as stable, tested code
-* The are no parallel support for parallel releases - all releases are made from the ``master`` branch
+* The is support for parallel releases - all releases are made from the ``master`` branch
 * For every task, a separate branch is checked out from the ``master`` branch (named ``"_ISSUE_KEY_ - _ISSUE_TITLE_"``), and then merged back to the ``master`` branch using a pull request
 * Hot fixes created on a separate branch (named ``hotfix-vX.Y.Z - list of relevant _ISSUE_KEYS_``), and then merged back to ``master`` using a pull request
 * To prevent complicated merges when a task is complete, programmers are encouraged to pull ``master`` and merge locally to their task branch on a daily basis 
