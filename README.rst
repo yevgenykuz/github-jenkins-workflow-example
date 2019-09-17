@@ -17,10 +17,10 @@ Branching strategy
 ------------------
 * ``master`` is the base branch, there is no ``develop`` branch
 * ``master`` is considered as stable, tested code
-* The is support for parallel releases - all releases are made from the ``master`` branch
-* For every task, a separate branch is checked out from the ``master`` branch (named ``"_ISSUE_KEY_ - _ISSUE_TITLE_"``), and then merged back to the ``master`` branch using a pull request
-* Hot fixes created on a separate branch (named ``hotfix-vX.Y.Z - list of relevant _ISSUE_KEYS_``), and then merged back to ``master`` using a pull request
-* To prevent complicated merges when a task is complete, programmers are encouraged to pull ``master`` and merge locally to their task branch on a daily basis 
+* There is no support for parallel releases - all releases are made from the ``master`` branch
+* For every task, a separate branch is checked out from the ``master`` branch (named ``"_ISSUE_KEY_-_ISSUE_TITLE_"``), and then merged back to the ``master`` branch using a pull request
+* Hot fixes are created on a separate branch (named ``hotfix-vX.Y.Z``), and then merged back to ``master`` using a pull request
+* To prevent complicated merges when a task is complete, programmers are encouraged to pull ``master`` and merge/rebase locally to their task branch on a daily basis 
 * Programmers can collaborate on a single task by pushing a task branch to remote and sharing it
 * Planned releases **and** hot fixes are marked on the ``master`` branch by adding a tag on it (see *Tags*). This is done automatically using a Jenkins job (see *Jenkins release job*)
 * All branches are deleted from remote (GitHub) after the relevant pull request is merged
@@ -28,7 +28,7 @@ Branching strategy
 Tags
 ----
 * All releases are marked with tags. These tags are then used by CI and other Jenkins jobs (see *Jenkins*)
-* Major releases **and** hot fixes are tagged on the ``master`` branch, by running release Jenkins job (see *Jenkins release job*)
+* Major releases **and** hot fixes are tagged on ``master`` branch, by running Jenkins release job (see *Jenkins release job*)
 * All tags must be annotated and contain in its description the release version this tag represents, at minimum 
 
 
@@ -38,8 +38,8 @@ Jenkins
 =======
 Install ngrok on your Jenkins master (if not exposed to the internet)
 ---------------------------------------------------------------------
-| In case your Jenkins server is not exposed to the internet, you can use a tunneling services like `ngrok <https://ngrok.com/>`_ to allow GitHub to communicate with it. ngrok provides a free plan that is sufficient for GitHub <-> communication.
-| In any case, exposing your Jenkins to the internet is the preferred way and should be prioritized.
+| In case your Jenkins server is not exposed to the internet, you can use a tunneling service like `ngrok <https://ngrok.com/>`_ to allow GitHub to communicate with it. ngrok provides a free plan that is sufficient for GitHub <-> Jenkins communication.
+| In any case, exposing your Jenkins to the internet is the preferred way.
 
 To install ngrok on your Jenkins master see the following configuration example (used on CentOS 7, all commands are done as root):
 
@@ -189,7 +189,7 @@ To do so, go to github repository -> "Settings" -> "Branches" -> "Add rule", and
 
 #. "Apply rule to" -> master
 #. "Require pull request reviews before merging" -> tick it
-#. "Required approving reviews" -> select the minimum number of reviewers (depends on team size. If possible, 2 should be the minimum in my opinion)
+#. "Required approving reviews" -> select the minimum number of reviewers (depends on team size)
 #. "Dismiss stale pull request approvals when new commits are pushed" -> tick it
 #. "Require status checks to pass before merging" -> tick it
 #. "Require branches to be up to date before merging" -> tick it
